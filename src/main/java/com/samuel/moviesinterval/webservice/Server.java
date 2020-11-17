@@ -5,8 +5,8 @@
  */
 package com.samuel.moviesinterval.webservice;
 
+import com.samuel.moviesinterval.entity.Interval;
 import com.samuel.moviesinterval.entity.Producer;
-import com.samuel.moviesinterval.repo.MoviesRepository;
 import com.samuel.moviesinterval.repo.ProducerRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +33,12 @@ public class Server {
      * @return List<Producer>
      */
     @GetMapping("/producers")
-    public List<Producer> producerinterval() {
+    public Interval producerinterval() {
 
         List<Producer> producers = repoProducer.findByWinner(true);
 
-        Producer mostIntervalProducer = null;
-        Producer minIntervalProducer = null;
-
+        Interval interval = new Interval();
+        
         int mostYearDif = Integer.MIN_VALUE;
         int minYearDif = Integer.MAX_VALUE;
 
@@ -49,17 +48,27 @@ public class Server {
             for (int j = i + 1; j < producers.size() - i; j++) {
 
                 if (producer.getProducer().equals(producers.get(j).getProducer())) {
-                    int yearDif = Math.abs(producer.getYear() - producers.get(j).getYear());
+                    int yearDif = Math.abs(producer.getInterval() - producers.get(j).getInterval());
 
-                    if (yearDif < mostYearDif) {
+                    if (yearDif < minYearDif) {
                         minYearDif = yearDif;
-                        minIntervalProducer = producer;
+                        List mins = new ArrayList<Producer>();
+                        mins.add(producer);
+                        interval.setMin(mins);
+                    } else if (yearDif == minYearDif) {
+                        interval.getMin().add(producer);
                     }
 
                     if (yearDif > mostYearDif) {
                         mostYearDif = yearDif;
-                        mostIntervalProducer = producer;
+                        List maxs = new ArrayList<Producer>();
+                        maxs.add(producer);
+                        interval.setMax(maxs);
+                    } else if (yearDif == mostYearDif) {
+                        interval.getMax().add(producer);
                     }
+                    
+                    producer.setPreviousFollowingWin(producers.get(j));
 
                     break;
                 }
@@ -67,19 +76,7 @@ public class Server {
             i++;
         }
 
-        producers = new ArrayList<>();
-
-        if (minIntervalProducer != null) {
-            minIntervalProducer.setYear(minYearDif);
-            producers.add(minIntervalProducer);
-        }
-
-        if (mostIntervalProducer != null) {
-            mostIntervalProducer.setYear(mostYearDif);
-            producers.add(mostIntervalProducer);
-        }
-        
-        return producers;
+        return interval;
     }
 
 }

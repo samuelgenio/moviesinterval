@@ -24,7 +24,7 @@ public class Storage {
 
         try {
 
-            CSVReader csvReader = new CSVReaderBuilder(new FileReader(System.getProperty("user.dir") + "\\movielist.csv"))
+            CSVReader csvReader = new CSVReaderBuilder(new FileReader("movielist.csv"))
                     .withSkipLines(1)
                     .withCSVParser(new CSVParserBuilder().withSeparator(';').build()).build();
 

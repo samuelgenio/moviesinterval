@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface ProducerRepository extends JpaRepository<Producer, Long> {
 
-    @Query(value = "SELECT * FROM Producer U WHERE winner = ?1 AND (SELECT MAX(year) FROM Producer UU WHERE UU.winner = U.winner and U.year <> UU.year and UU.producer like CONCAT('%', U.producer, '%')) <> U.year ", nativeQuery = true)
+    @Query(value = "SELECT * FROM Producer U WHERE winner = ?1 AND (SELECT MAX(interval_year) FROM Producer UU WHERE UU.winner = U.winner and U.interval_year <> UU.interval_year and UU.producer like CONCAT('%', U.producer, '%')) <> U.interval_year ", nativeQuery = true)
     List<Producer> findByWinner(boolean isWinner);
 
 }
