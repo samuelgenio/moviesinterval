@@ -22,20 +22,28 @@ acessar url http://localhost:8080/producers
 Na URL será mostrado o retorno no seguinte formato, o primeiro registro sempre mostrará o produtor que obteve mais rápido dois prêmios consecutivos, já segundo mostra o produtor que demorou mais tempo a conseguir dois prêmios.
 
 ```json
-[
-
+{
+  "min": [
     {
-        "id": 127,
-        "year": 1,
-        "producer": "Joel Silver",
-        "winner": true
+      "producer": "Gregory Goodman",
+      "interval": 1,
+      "previousWin": 1980,
+      "followingWin": 1981
     },
     {
-        "id": 2,
-        "year": 45,
-        "producer": "Gregory Goodman",
-        "winner": true
+      "producer": "Joel Silver",
+      "interval": 1,
+      "previousWin": 1990,
+      "followingWin": 1991
     }
-
-]
+  ],
+  "max": [
+    {
+      "producer": "Gregory Goodman",
+      "interval": 44,
+      "previousWin": 1981,
+      "followingWin": 2025
+    }
+  ]
+}
 ```
